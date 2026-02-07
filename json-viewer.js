@@ -31,10 +31,11 @@ document.addEventListener('DOMContentLoaded', () => {
         
         switch(type) {
             case 'string':
-                return `"${escapeHtml(value)}"`;
+                return `<span class="json-string">"${escapeHtml(value)}"</span>`;
             case 'number':
+                return `<span class="json-number">${value}</span>`;
             case 'boolean':
-                return `<span class="json-value json-${type}">${value}</span>`;
+                return `<span class="json-boolean">${value}</span>`;
             case 'null':
                 return `<span class="json-null">null</span>`;
             default:
@@ -101,8 +102,8 @@ document.addEventListener('DOMContentLoaded', () => {
         return html;
     };
     
-    const displayJsonTree = (data, fileName = '') => {
-        let html = '<div class="json-viewer">';
+    const displayJsonData = (data, fileName = '') => {
+        let html = '<div class="data-section">';
         
         if (fileName) {
             html += `<div class="file-info">
@@ -110,61 +111,18 @@ document.addEventListener('DOMContentLoaded', () => {
             </div>`;
         }
         
+        html += '<h2>Данные из JSON файла</h2>';
         html += '<div class="json-tree">';
         html += createJsonTree(data);
         html += '</div>';
-        
-        html += `<div class="json-stats">
-            <p><strong>Структура JSON:</strong></p>
-            <ul>
-                <li>Всего ключей: ${countKeys(data)}</li>
-                <li>Всего элементов: ${countElements(data)}</li>
-                <li>Максимальная глубина: ${getDepth(data)}</li>
-            </ul>
-        </div>`;
-        
+        html += '<h3>Исходный JSON</h3>';
+        html += `<pre>${JSON.stringify(data, null, 2)}</pre>`;
         html += '</div>';
+        
         return html;
     };
     
-    const countKeys = (obj) => {
-        if (typeof obj !== 'object' || obj === null) return 0;
-        
-        let count = Object.keys(obj).length;
-        for (const key in obj) {
-            if (typeof obj[key] === 'object' && obj[key] !== null) {
-                count += countKeys(obj[key]);
-            }
-        }
-        return count;
-    };
-    
-    const countElements = (obj) => {
-        if (Array.isArray(obj)) {
-            return obj.reduce((sum, item) => sum + countElements(item), obj.length);
-        } else if (typeof obj === 'object' && obj !== null) {
-            return Object.values(obj).reduce((sum, item) => sum + countElements(item), 0);
-        }
-        return 1;
-    };
-    
-    const getDepth = (obj, currentDepth = 0) => {
-        if (typeof obj !== 'object' || obj === null) return currentDepth;
-        
-        let maxDepth = currentDepth;
-        if (Array.isArray(obj)) {
-            for (const item of obj) {
-                maxDepth = Math.max(maxDepth, getDepth(item, currentDepth + 1));
-            }
-        } else {
-            for (const key in obj) {
-                maxDepth = Math.max(maxDepth, getDepth(obj[key], currentDepth + 1));
-            }
-        }
-        return maxDepth;
-    };
-    
-    const setupToggleListeners = () => {
+    const setupJsonToggleListeners = () => {
         document.querySelectorAll('.json-toggle').forEach(toggle => {
             toggle.addEventListener('click', function() {
                 const targetId = this.getAttribute('data-target');
@@ -181,84 +139,101 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     };
     
-    const readFileAsText = (file) => {
+    const loadJsonFile = () => {
         return new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            reader.onload = (e) => resolve(e.target.result);
-            reader.onerror = () => reject(new Error('Ошибка чтения файла'));
-            reader.readAsText(file);
+            const fileInput = document.createElement('input');
+            fileInput.type = 'file';
+            fileInput.accept = '.json';
+            fileInput.style.display = 'none';
+            
+            fileInput.onchange = (event) => {
+                const file = event.target.files[0];
+                if (!file) {
+                    reject(new Error('Файл не выбран'));
+                    return;
+                }
+                
+                if (!file.name.toLowerCase().endsWith('.json')) {
+                    reject(new Error('Пожалуйста, выберите JSON файл'));
+                    return;
+                }
+                
+                const reader = new FileReader();
+                
+                reader.onload = (e) => {
+                    try {
+                        const data = JSON.parse(e.target.result);
+                        resolve({
+                            data: data,
+                            fileName: file.name,
+                            fileSize: (file.size / 1024).toFixed(2) + ' KB'
+                        });
+                    } catch (error) {
+                        reject(new Error('Ошибка парсинга JSON'));
+                    }
+                };
+                
+                reader.onerror = () => {
+                    reject(new Error('Ошибка чтения файла'));
+                };
+                
+                reader.readAsText(file);
+            };
+            
+            document.body.appendChild(fileInput);
+            fileInput.click();
+            setTimeout(() => {
+                if (fileInput.parentNode) {
+                    fileInput.parentNode.removeChild(fileInput);
+                }
+            }, 100);
         });
     };
     
     loadJsonBtn.addEventListener('click', async () => {
         showLoader();
         
-        const fileInput = document.createElement('input');
-        fileInput.type = 'file';
-        fileInput.accept = '.json';
-        fileInput.style.display = 'none';
-        
-        fileInput.onchange = async (event) => {
-            const file = event.target.files[0];
-            if (!file) {
-                hideLoader();
-                return;
-            }
+        try {
+            const result = await loadJsonFile();
+            hideLoader();
             
-            if (!file.name.toLowerCase().endsWith('.json')) {
-                hideLoader();
-                dataDisplay.innerHTML = `
-                    <div class="error-message">
-                        <h3>Ошибка</h3>
-                        <p>Пожалуйста, выберите файл с расширением .json</p>
-                    </div>
-                `;
-                return;
-            }
+            dataDisplay.innerHTML = displayJsonData(result.data, result.fileName);
+            dataDisplay.classList.add('loaded');
             
-            try {
-                const text = await readFileAsText(file);
-                const data = JSON.parse(text);
-                
-                hideLoader();
-                dataDisplay.innerHTML = displayJsonTree(data, file.name);
-                dataDisplay.classList.add('loaded');
-                
-                setTimeout(setupToggleListeners, 0);
-                
-            } catch (error) {
-                hideLoader();
-                dataDisplay.innerHTML = `
-                    <div class="error-message">
-                        <h3>Ошибка загрузки JSON</h3>
-                        <p>${error.message}</p>
-                        <p>Убедитесь, что файл содержит корректный JSON-формат.</p>
-                    </div>
-                `;
-            }
-        };
-        
-        document.body.appendChild(fileInput);
-        fileInput.click();
-        setTimeout(() => {
-            if (fileInput.parentNode) {
-                fileInput.parentNode.removeChild(fileInput);
-            }
-        }, 100);
+            setTimeout(setupJsonToggleListeners, 0);
+            
+            const infoDiv = document.createElement('div');
+            infoDiv.innerHTML = `
+                <div style="background:#d4edda; color:#155724; padding:12px 20px; border-radius:6px; margin-bottom:20px;">
+                    <strong>JSON файл успешно загружен!</strong><br>
+                    <small>Имя: ${result.fileName} | Размер: ${result.fileSize}</small>
+                </div>
+            `;
+            dataDisplay.prepend(infoDiv);
+            
+        } catch (error) {
+            hideLoader();
+            dataDisplay.innerHTML = `
+                <div class="error-message">
+                    <h3>Ошибка загрузки JSON</h3>
+                    <p>${error.message}</p>
+                    <p>Убедитесь, что вы выбираете файл data.json</p>
+                </div>
+            `;
+        }
     });
     
     loadXmlBtn.addEventListener('click', () => {
         dataDisplay.innerHTML = `
             <div class="info-message">
                 <h3>Загрузка XML</h3>
-                <p>Для загрузки XML используйте файл xml-viewer.js</p>
+                <p>Для загрузки XML используйте кнопку в xml-viewer.js</p>
             </div>
         `;
-        dataDisplay.classList.remove('loaded');
     });
     
     clearBtn.addEventListener('click', () => {
-        dataDisplay.innerHTML = '<p class="placeholder">Данные будут отображены здесь после нажатия на кнопку "Загрузить JSON"</p>';
+        dataDisplay.innerHTML = '<p class="placeholder">Данные будут отображены здесь после нажатия на кнопку "Загрузить JSON" или "Загрузить XML"</p>';
         dataDisplay.classList.remove('loaded');
     });
 });

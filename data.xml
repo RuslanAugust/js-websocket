@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<company>
+    <name>IT-компания TechSolutions</name>
+    <location>Москва, Россия</location>
+    <founded>2018</founded>
+    <description>Компания специализируется на разработке веб-приложений и мобильных решений.</description>
+    <employees>
+        <employee>
+            <id>1</id>
+            <name>Иванов Иван</name>
+            <position>Frontend-разработчик</position>
+            <department>Разработка</department>
+            <email>ivanov@techsolutions.ru</email>
+            <salary>120000</salary>
+            <hire_date>2020-03-15</hire_date>
+            <active>true</active>
+            <skills>
+                <skill>JavaScript</skill>
+                <skill>React</skill>
+                <skill>TypeScript</skill>
+                <skill>HTML/CSS</skill>
+            </skills>
+        </employee>
+        <employee>
+            <id>2</id>
+            <name>Петрова Анна</name>
+            <position>UX/UI дизайнер</position>
+            <department>Дизайн</department>
+            <email>petrova@techsolutions.ru</email>
+            <salary>90000</salary>
+            <hire_date>2019-07-22</hire_date>
+            <active>true</active>
+            <skills>
+                <skill>Figma</skill>
+                <skill>Adobe XD</skill>
+                <skill>Photoshop</skill>
+                <skill>Иллюстратор</skill>
+            </skills>
+        </employee>
+        <employee>
+            <id>3</id>
+            <name>Сидоров Алексей</name>
+            <position>Backend-разработчик</position>
+            <department>Разработка</department>
+            <email>sidorov@techsolutions.ru</email>
+            <salary>140000</salary>
+            <hire_date>2021-11-10</hire_date>
+            <active>true</active>
+            <skills>
+                <skill>Python</skill>
+                <skill>Django</skill>
+                <skill>PostgreSQL</skill>
+                <skill>Docker</skill>
+                <skill>Redis</skill>
+            </skills>
+        </employee>
+    </employees>
+    <projects>
+        <project>
+            <id>1</id>
+            <name>Корпоративный портал</name>
+            <status>Завершен</status>
+            <budget>1500000</budget>
+            <deadline>2023-06-30</deadline>
+            <team_size>5</team_size>
+        </project>
+        <project>
+            <id>2</id>
+            <name>Мобильное приложение</name>
+            <status>В разработке</status>
+            <budget>2000000</budget>
+            <deadline>2024-03-15</deadline>
+            <team_size>8</team_size>
+        </project>
+        <project>
+            <id>3</id>
+            <name>Облачное хранилище</name>
+            <status>Планирование</status>
+            <budget>2500000</budget>
+            <deadline>2024-09-30</deadline>
+            <team_size>6</team_size>
+        </project>
+    </projects>
+</company>
