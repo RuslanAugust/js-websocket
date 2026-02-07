@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Практическое задание: JSON и XML</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>Практическое задание: JSON и XML</h1>
+        <p class="description">Нажмите на кнопки ниже, чтобы загрузить данные в разных форматах.</p>
+    </header>
+
+    <div class="controls">
+        <button id="loadJsonBtn" class="json-btn">
+            Загрузить JSON
+        </button>
+
+        <button id="loadXmlBtn" class="xml-btn">
+            Загрузить XML
+        </button>
+
+        <button id="clearBtn" class="clear-btn">
+            Очистить данные
+        </button>
+    </div>
+
+    <div class="loader" id="loader">
+        <div class="spinner"></div>
+        <p>Загрузка данных...</p>
+    </div>
+
+    <div class="data-display" id="dataDisplay">
+        <p class="placeholder">Данные будут отображены здесь после нажатия на кнопку "Загрузить JSON" или "Загрузить XML"</p>
+    </div>
+
+    <div class="websocket-section">
+        <h2>WebSocket соединение</h2>
+
+        <div class="ws-controls">
+            <button id="connectWsBtn" class="ws-connect-btn">
+                Подключиться к WebSocket
+            </button>
+            <button id="disconnectWsBtn" class="ws-disconnect-btn" disabled>
+                Отключиться
+            </button>
+        </div>
+
+        <div class="ws-status">
+            <h3>Статус: <span id="wsStatus">Не подключено</span></h3>
+            <div id="connectionInfo"></div>
+        </div>
+
+        <div class="ws-message-controls">
+            <input type="text" id="wsMessageInput" placeholder="Введите сообщение для отправки..." disabled>
+            <button id="sendWsBtn" class="ws-send-btn" disabled>
+                Отправить
+            </button>
+        </div>
+
+        <div class="ws-data-display" id="wsDataDisplay">
+            <p class="placeholder">Здесь будут отображаться сообщения WebSocket...</p>
+        </div>
+    </div>
+
+    <div class="sse-section">
+        <h2>Server-Sent Events (SSE)</h2>
+        <div class="controls">
+            <button id="connectSseBtn" class="sse-connect-btn">
+                Подключиться SSE
+            </button>
+            <button id="disconnectSseBtn" class="sse-disconnect-btn" disabled>
+                Отключиться SSE
+            </button>
+        </div>
+        <div class="sse-data-display" id="sseDataDisplay">
+            <p class="placeholder">Данные SSE будут отображаться здесь</p>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 Передача данных и обработка форматов JSON и XML | ПИбд-2106а.</p>
+    </footer>
+</div>
+
+<script src="json-viewer.js"></script>
+<script src="websocket-client.js"></script>
+<script src="sse-client.js"></script>
+</body>
+</html>

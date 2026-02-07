@@ -1,0 +1,89 @@
+{
+  "company": "IT-компания TechSolutions",
+  "location": "Москва, Россия",
+  "founded": 2018,
+  "description": "Компания специализируется на разработке веб-приложений и мобильных решений.",
+  "employees": [
+    {
+      "id": 1,
+      "name": "Иванов Иван",
+      "position": "Frontend-разработчик",
+      "department": "Разработка",
+      "email": "ivanov@techsolutions.ru",
+      "salary": 120000,
+      "hire_date": "2020-03-15",
+      "active": true,
+      "skills": ["JavaScript", "React", "TypeScript", "HTML/CSS"]
+    },
+    {
+      "id": 2,
+      "name": "Петрова Анна",
+      "position": "UX/UI дизайнер",
+      "department": "Дизайн",
+      "email": "petrova@techsolutions.ru",
+      "salary": 90000,
+      "hire_date": "2019-07-22",
+      "active": true,
+      "skills": ["Figma", "Adobe XD", "Photoshop", "Иллюстратор"]
+    },
+    {
+      "id": 3,
+      "name": "Сидоров Алексей",
+      "position": "Backend-разработчик",
+      "department": "Разработка",
+      "email": "sidorov@techsolutions.ru",
+      "salary": 140000,
+      "hire_date": "2021-11-10",
+      "active": true,
+      "skills": ["Python", "Django", "PostgreSQL", "Docker", "Redis"]
+    },
+    {
+      "id": 4,
+      "name": "Кузнецова Мария",
+      "position": "Project Manager",
+      "department": "Управление",
+      "email": "kuznetsova@techsolutions.ru",
+      "salary": 130000,
+      "hire_date": "2019-02-28",
+      "active": true,
+      "skills": ["Scrum", "Agile", "Jira", "Управление командой"]
+    },
+    {
+      "id": 5,
+      "name": "Васильев Дмитрий",
+      "position": "QA инженер",
+      "department": "Тестирование",
+      "email": "vasiliev@techsolutions.ru",
+      "salary": 85000,
+      "hire_date": "2022-05-18",
+      "active": true,
+      "skills": ["Автоматизированное тестирование", "Selenium", "Jest", "Postman"]
+    }
+  ],
+  "projects": [
+    {
+      "id": 1,
+      "name": "Корпоративный портал",
+      "status": "Завершен",
+      "budget": 1500000,
+      "deadline": "2023-06-30",
+      "team_size": 5
+    },
+    {
+      "id": 2,
+      "name": "Мобильное приложение",
+      "status": "В разработке",
+      "budget": 2000000,
+      "deadline": "2024-03-15",
+      "team_size": 8
+    },
+    {
+      "id": 3,
+      "name": "Облачное хранилище",
+      "status": "Планирование",
+      "budget": 2500000,
+      "deadline": "2024-09-30",
+      "team_size": 6
+    }
+  ]
+}

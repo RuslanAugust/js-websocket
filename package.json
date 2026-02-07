@@ -1,0 +1,19 @@
+{
+  "name": "web-data",
+  "version": "1.0.0",
+  "description": "Практическое задание: Передача данных и обработка форматов JSON и XML",
+  "main": "websocket-server.js",
+  "scripts": {
+    "start-ws": "node websocket-server.js",
+    "start-sse": "node sse-server.js"
+  },
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.6",
+    "express": "^5.2.1",
+    "ws": "^8.14.2"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}
